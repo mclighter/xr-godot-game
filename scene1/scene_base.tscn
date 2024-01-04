@@ -1,0 +1,93 @@
+[gd_scene load_steps=20 format=3 uid="uid://bl7cugc388stp"]
+
+[ext_resource type="PackedScene" uid="uid://qbmx03iibuuu" path="res://addons/godot-xr-tools/staging/scene_base.tscn" id="1_7mofw"]
+[ext_resource type="PackedScene" uid="uid://dhaqth6q5yw4n" path="res://addons/godot-xr-tools/hands/model/hand_l.gltf" id="2_5sft5"]
+[ext_resource type="Texture2D" uid="uid://d3ot633xu7vij" path="res://scene1/Epic_GloriousPink_EquiRect.png" id="2_dheba"]
+[ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="3_dkuy3"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_toxy3"]
+[ext_resource type="PackedScene" uid="uid://ds1t8vc0kxoeo" path="res://addons/godot-xr-tools/hands/model/hand_r.gltf" id="4_5suct"]
+[ext_resource type="Resource" path="res://scene1/terrain_data/data.hterrain" id="4_o7vwj"]
+[ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_ip5b1"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_patvu"]
+[ext_resource type="Texture2D" uid="uid://qg8q7pxlrh6o" path="res://scene1/textures_imported/slot0_albedo_bump.png" id="6_5btt0"]
+[ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="6_6d8p7"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="7_5n6da"]
+[ext_resource type="Texture2D" uid="uid://cy0as1s0tbf72" path="res://scene1/textures_imported/slot0_normal_roughness.png" id="7_jsu3t"]
+[ext_resource type="PackedScene" uid="uid://bhwl0fbhtgynf" path="res://scene1/models/SPACESHIP.glb" id="14_4ppnb"]
+[ext_resource type="ArrayMesh" uid="uid://wqmj6dawmb6h" path="res://scene1/models/streetlamp.obj" id="15_7fam7"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_i6d31"]
+panorama = ExtResource("2_dheba")
+
+[sub_resource type="Sky" id="Sky_2u683"]
+sky_material = SubResource("PanoramaSkyMaterial_i6d31")
+
+[sub_resource type="Environment" id="Environment_0ytrb"]
+background_mode = 2
+sky = SubResource("Sky_2u683")
+
+[sub_resource type="Resource" id="Resource_s2q5u"]
+script = ExtResource("5_patvu")
+mode = 0
+textures = [[ExtResource("6_5btt0")], [ExtResource("7_jsu3t")]]
+
+[node name="SceneBase" instance=ExtResource("1_7mofw")]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." index="0"]
+environment = SubResource("Environment_0ytrb")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." index="1"]
+transform = Transform3D(0.992876, 0.034177, -0.114142, -0.0159334, 0.987459, 0.157071, 0.118079, -0.154134, 0.980969, 0, 32.034, 265.576)
+light_energy = 2.371
+
+[node name="XROrigin3D" type="XROrigin3D" parent="." index="2"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" index="0"]
+
+[node name="LeftControl" type="XRController3D" parent="XROrigin3D" index="1"]
+tracker = &"left_hand"
+
+[node name="hand_l" parent="XROrigin3D/LeftControl" index="0" instance=ExtResource("2_5sft5")]
+
+[node name="MovementDirect" parent="XROrigin3D/LeftControl" index="1" instance=ExtResource("3_dkuy3")]
+
+[node name="RightControl" type="XRController3D" parent="XROrigin3D" index="2"]
+tracker = &"right_hand"
+
+[node name="hand_r" parent="XROrigin3D/RightControl" index="0" instance=ExtResource("4_5suct")]
+
+[node name="FunctionTeleport" parent="XROrigin3D/RightControl" index="1" instance=ExtResource("6_6d8p7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10403, 0)
+
+[node name="MovementTurn" parent="XROrigin3D/RightControl" index="2" instance=ExtResource("5_ip5b1")]
+
+[node name="PlayerBody" parent="XROrigin3D" index="3" instance=ExtResource("7_5n6da")]
+
+[node name="HTerrain" type="Node3D" parent="." index="3"]
+script = ExtResource("3_toxy3")
+centered = true
+_terrain_data = ExtResource("4_o7vwj")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_s2q5u")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale_per_texture = null
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+shader_params/u_globalmap_blend_start = null
+shader_params/u_globalmap_blend_distance = null
+shader_params/u_colormap_opacity_per_texture = null
+
+[node name="SPACESHIP" parent="." index="4" instance=ExtResource("14_4ppnb")]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 4.86638, 0, 12.1628)
+
+[node name="Streetlamp" type="MeshInstance3D" parent="." index="5"]
+transform = Transform3D(0.3, 0, 0, 0, 0.3, 0, 0, 0, 0.3, 13.0375, 0, -3.08436)
+mesh = ExtResource("15_7fam7")

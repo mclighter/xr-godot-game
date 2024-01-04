@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://lbxpkpe52pe0"]
+
+[ext_resource type="PackedScene" uid="uid://bnqnnnet4dw12" path="res://addons/godot-xr-tools/staging/staging.tscn" id="1_aekb3"]
+[ext_resource type="Texture2D" uid="uid://cw7ny087ism2" path="res://start/in-the-winter.jpg" id="2_47oco"]
+
+[node name="Staging" instance=ExtResource("1_aekb3")]
+main_scene = "res://scene1/scene_base.tscn"
+
+[node name="XRCamera3D" parent="XROrigin3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 0.998695, -0.051081, 0, 0.051081, 0.998695, 0, 9.18073, 0)
+fov = 62.5511
+
+[node name="LoadingScreen" parent="." index="2"]
+splash_screen = ExtResource("2_47oco")
