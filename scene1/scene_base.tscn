@@ -1,20 +1,23 @@
-[gd_scene load_steps=20 format=3 uid="uid://bl7cugc388stp"]
+[gd_scene load_steps=25 format=3 uid="uid://bl7cugc388stp"]
 
 [ext_resource type="PackedScene" uid="uid://qbmx03iibuuu" path="res://addons/godot-xr-tools/staging/scene_base.tscn" id="1_7mofw"]
-[ext_resource type="PackedScene" uid="uid://dhaqth6q5yw4n" path="res://addons/godot-xr-tools/hands/model/hand_l.gltf" id="2_5sft5"]
 [ext_resource type="Texture2D" uid="uid://d3ot633xu7vij" path="res://scene1/Epic_GloriousPink_EquiRect.png" id="2_dheba"]
 [ext_resource type="PackedScene" uid="uid://bl2nuu3qhlb5k" path="res://addons/godot-xr-tools/functions/movement_direct.tscn" id="3_dkuy3"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="3_toxy3"]
-[ext_resource type="PackedScene" uid="uid://ds1t8vc0kxoeo" path="res://addons/godot-xr-tools/hands/model/hand_r.gltf" id="4_5suct"]
+[ext_resource type="PackedScene" uid="uid://c16hy5qn6jw4x" path="res://addons/godot-xr-tools/hands/blend/hand_l.blend" id="4_cw5y7"]
 [ext_resource type="Resource" path="res://scene1/terrain_data/data.hterrain" id="4_o7vwj"]
 [ext_resource type="PackedScene" uid="uid://b6bk2pj8vbj28" path="res://addons/godot-xr-tools/functions/movement_turn.tscn" id="5_ip5b1"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="5_patvu"]
 [ext_resource type="Texture2D" uid="uid://qg8q7pxlrh6o" path="res://scene1/textures_imported/slot0_albedo_bump.png" id="6_5btt0"]
 [ext_resource type="PackedScene" uid="uid://fiul51tsyoop" path="res://addons/godot-xr-tools/functions/function_teleport.tscn" id="6_6d8p7"]
 [ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="7_5n6da"]
+[ext_resource type="PackedScene" uid="uid://b3o7ovmjx2gef" path="res://addons/godot-xr-tools/hands/blend/hand_r.blend" id="7_ir27w"]
 [ext_resource type="Texture2D" uid="uid://cy0as1s0tbf72" path="res://scene1/textures_imported/slot0_normal_roughness.png" id="7_jsu3t"]
+[ext_resource type="Texture2D" uid="uid://7r4acenonwe6" path="res://scene1/smoke_01.png" id="9_mmc6y"]
+[ext_resource type="Texture2D" uid="uid://xp8r6ie6mc0k" path="res://scene1/textures_raw/rock/Rock035_2K-JPG_Color.jpg" id="13_irit4"]
 [ext_resource type="PackedScene" uid="uid://bhwl0fbhtgynf" path="res://scene1/models/SPACESHIP.glb" id="14_4ppnb"]
 [ext_resource type="ArrayMesh" uid="uid://wqmj6dawmb6h" path="res://scene1/models/streetlamp.obj" id="15_7fam7"]
+[ext_resource type="Texture2D" uid="uid://03miyx5tdda3" path="res://scene1/textures_raw/rock/Rock035_2K-JPG_NormalDX.jpg" id="15_l6ism"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_i6d31"]
 panorama = ExtResource("2_dheba")
@@ -25,11 +28,25 @@ sky_material = SubResource("PanoramaSkyMaterial_i6d31")
 [sub_resource type="Environment" id="Environment_0ytrb"]
 background_mode = 2
 sky = SubResource("Sky_2u683")
+fog_enabled = true
+fog_light_color = Color(0.854902, 0.870588, 0.894118, 1)
+fog_light_energy = 0.38
+fog_density = 0.0022
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qk8xx"]
+transparency = 1
+blend_mode = 1
+albedo_texture = ExtResource("9_mmc6y")
+billboard_mode = 1
+
+[sub_resource type="QuadMesh" id="QuadMesh_gfye7"]
+material = SubResource("StandardMaterial3D_qk8xx")
+size = Vector2(0.03, 0.03)
 
 [sub_resource type="Resource" id="Resource_s2q5u"]
 script = ExtResource("5_patvu")
 mode = 0
-textures = [[ExtResource("6_5btt0")], [ExtResource("7_jsu3t")]]
+textures = [[ExtResource("6_5btt0"), ExtResource("13_irit4")], [ExtResource("7_jsu3t"), ExtResource("15_l6ism")]]
 
 [node name="SceneBase" instance=ExtResource("1_7mofw")]
 
@@ -43,25 +60,39 @@ light_energy = 2.371
 [node name="XROrigin3D" type="XROrigin3D" parent="." index="2"]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D" index="0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.7, 0)
 
 [node name="LeftControl" type="XRController3D" parent="XROrigin3D" index="1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1, -0.5)
 tracker = &"left_hand"
 
-[node name="hand_l" parent="XROrigin3D/LeftControl" index="0" instance=ExtResource("2_5sft5")]
+[node name="MovementDirect" parent="XROrigin3D/LeftControl" index="0" instance=ExtResource("3_dkuy3")]
 
-[node name="MovementDirect" parent="XROrigin3D/LeftControl" index="1" instance=ExtResource("3_dkuy3")]
+[node name="hand_l" parent="XROrigin3D/LeftControl" index="1" instance=ExtResource("4_cw5y7")]
 
 [node name="RightControl" type="XRController3D" parent="XROrigin3D" index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 1, -0.5)
 tracker = &"right_hand"
 
-[node name="hand_r" parent="XROrigin3D/RightControl" index="0" instance=ExtResource("4_5suct")]
+[node name="FunctionTeleport" parent="XROrigin3D/RightControl" index="0" instance=ExtResource("6_6d8p7")]
+can_teleport_color = Color(0.447059, 0.788235, 0.694118, 1)
 
-[node name="FunctionTeleport" parent="XROrigin3D/RightControl" index="1" instance=ExtResource("6_6d8p7")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10403, 0)
+[node name="MovementTurn" parent="XROrigin3D/RightControl" index="1" instance=ExtResource("5_ip5b1")]
 
-[node name="MovementTurn" parent="XROrigin3D/RightControl" index="2" instance=ExtResource("5_ip5b1")]
+[node name="hand_r" parent="XROrigin3D/RightControl" index="2" instance=ExtResource("7_ir27w")]
 
 [node name="PlayerBody" parent="XROrigin3D" index="3" instance=ExtResource("7_5n6da")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.135075, 0)
+
+[node name="CPUParticles3D" type="CPUParticles3D" parent="XROrigin3D" index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.58158, -2.44369)
+amount = 80000
+fixed_fps = 24
+mesh = SubResource("QuadMesh_gfye7")
+emission_shape = 3
+emission_box_extents = Vector3(6, 4, 6)
+gravity = Vector3(0, -1, 0)
+initial_velocity_max = 2.0
 
 [node name="HTerrain" type="Node3D" parent="." index="3"]
 script = ExtResource("3_toxy3")

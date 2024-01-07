@@ -7,8 +7,11 @@
 main_scene = "res://scene1/scene_base.tscn"
 
 [node name="XRCamera3D" parent="XROrigin3D" index="0"]
-transform = Transform3D(1, 0, 0, 0, 0.998695, -0.051081, 0, 0.051081, 0.998695, 0, 9.18073, 0)
-fov = 62.5511
+transform = Transform3D(1, 0, 0, 0, 0.980272, -0.197657, 0, 0.197657, 0.980272, 0, 0, 0)
+fov = 50.3
+near = 0.101
+far = 1707.21
 
 [node name="LoadingScreen" parent="." index="2"]
+follow_speed = null
 splash_screen = ExtResource("2_47oco")
